@@ -1,20 +1,8 @@
 #include "HospitalUI.hh"
 #include <iostream>
 #include <string>
-#include <fstream>
 
 using namespace std;
-
-// Constants for file names
-const string PATIENTS_FILE = "patients.txt";
-const string DOCTORS_FILE = "doctors.txt";
-const string NURSES_FILE = "nurses.txt";
-
-// Helper function to clear existing content before saving
-void prepareFileForSave(const string& filename) {
-    ofstream file(filename, ios::trunc);
-    file.close();
-}
 
 int HospitalUI::displayMainMenu() {
     int choice;
@@ -30,7 +18,7 @@ int HospitalUI::displayMainMenu() {
     return choice;
 }
 
-// Admin Menu
+// Admin Menu - Updated to use the new Admin functionality
 void HospitalUI::handleAdminMenu(Admin& admin) {
     authenticateAdmin(admin);
 }
@@ -65,6 +53,10 @@ void HospitalUI::authenticateAdmin(Admin& admin) {
         case 6:
             admin.editNurseMenu();
             break;
+        case 7:
+            // Added new functionality for handling doctor, nurse, patient data files
+            admin.set_admin_choice();
+            break;
         case 0:
             break;
         default:
@@ -85,6 +77,7 @@ int HospitalUI::displayAdminMenu() {
     cout << "4. Edit Doctor Menu" << endl;
     cout << "5. View Nurse Menu" << endl;
     cout << "6. Edit Nurse Menu" << endl;
+    cout << "7. Manage Doctor/Nurse/Patient Data" << endl; // Added new option
     cout << "0. Back to Main Menu" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
@@ -210,14 +203,7 @@ void HospitalUI::registerNewPatient(vector<Patient>& patients) {
 
     Patient newPatient(id, name, age, gender, phone, address, patientId, bloodType, emergency);
     patients.push_back(newPatient);
-
-    // Save all patients to file
-    prepareFileForSave(PATIENTS_FILE);
-    for (auto& patient : patients) {
-        patient.saveToFile(PATIENTS_FILE);
-    }
-
-    cout << "Patient registered successfully! Data saved to " << PATIENTS_FILE << endl;
+    cout << "Patient registered successfully!" << endl;
 }
 
 void HospitalUI::viewPatientInfo(const vector<Patient>& patients) {
@@ -294,7 +280,6 @@ void HospitalUI::updatePatientInfo(vector<Patient>& patients) {
                 cout << "Enter allergy: ";
                 getline(cin, allergy);
                 patient.addAllergy(allergy);
-                cout << "Allergy added!" << endl;
                 break;
             }
             case 4: {
@@ -304,7 +289,6 @@ void HospitalUI::updatePatientInfo(vector<Patient>& patients) {
                 cout << "Enter dosage: ";
                 getline(cin, dosage);
                 patient.addMedication(medication, dosage);
-                cout << "Medication added!" << endl;
                 break;
             }
             case 5: {
@@ -312,7 +296,6 @@ void HospitalUI::updatePatientInfo(vector<Patient>& patients) {
                 cout << "Enter medical history record: ";
                 getline(cin, record);
                 patient.addMedicalHistory(record);
-                cout << "Medical history updated!" << endl;
                 break;
             }
             case 0:
@@ -322,14 +305,6 @@ void HospitalUI::updatePatientInfo(vector<Patient>& patients) {
             }
 
             found = true;
-
-            // Save all patients after update
-            prepareFileForSave(PATIENTS_FILE);
-            for (auto& p : patients) {
-                p.saveToFile(PATIENTS_FILE);
-            }
-            cout << "Changes saved to " << PATIENTS_FILE << endl;
-
             break;
         }
     }
@@ -356,14 +331,6 @@ void HospitalUI::admitPatient(vector<Patient>& patients) {
         if (patient.getPatientId() == patientId) {
             patient.admit(roomNumber);
             found = true;
-
-            // Save all patients after admission
-            prepareFileForSave(PATIENTS_FILE);
-            for (auto& p : patients) {
-                p.saveToFile(PATIENTS_FILE);
-            }
-            cout << "Admission recorded. Data saved to " << PATIENTS_FILE << endl;
-
             break;
         }
     }
@@ -388,14 +355,6 @@ void HospitalUI::dischargePatient(vector<Patient>& patients) {
         if (patient.getPatientId() == patientId) {
             patient.discharge();
             found = true;
-
-            // Save all patients after discharge
-            prepareFileForSave(PATIENTS_FILE);
-            for (auto& p : patients) {
-                p.saveToFile(PATIENTS_FILE);
-            }
-            cout << "Discharge recorded. Data saved to " << PATIENTS_FILE << endl;
-
             break;
         }
     }
@@ -477,14 +436,7 @@ void HospitalUI::registerDoctor(vector<Doctor>& doctors) {
 
     Doctor newDoctor(id, name, age, gender, phone, address, specialization, department, license);
     doctors.push_back(newDoctor);
-
-    // Save all doctors to file
-    prepareFileForSave(DOCTORS_FILE);
-    for (auto& doctor : doctors) {
-        doctor.saveToFile(DOCTORS_FILE);
-    }
-
-    cout << "Doctor registered successfully! Data saved to " << DOCTORS_FILE << endl;
+    cout << "Doctor registered successfully!" << endl;
 }
 
 void HospitalUI::registerNurse(vector<Nurse>& nurses) {
@@ -512,14 +464,7 @@ void HospitalUI::registerNurse(vector<Nurse>& nurses) {
 
     Nurse newNurse(id, name, age, gender, phone, address, department, nurseId);
     nurses.push_back(newNurse);
-
-    // Save all nurses to file
-    prepareFileForSave(NURSES_FILE);
-    for (auto& nurse : nurses) {
-        nurse.saveToFile(NURSES_FILE);
-    }
-
-    cout << "Nurse registered successfully! Data saved to " << NURSES_FILE << endl;
+    cout << "Nurse registered successfully!" << endl;
 }
 
 void HospitalUI::viewDoctorInfo(const vector<Doctor>& doctors) {
@@ -603,7 +548,6 @@ void HospitalUI::updateDoctorSchedule(vector<Doctor>& doctors) {
                 cout << "Enter hour (8-20): ";
                 cin >> hour;
                 doctor.addScheduleSlot(day, hour);
-                cout << "Schedule slot added!" << endl;
                 break;
             }
             case 2: {
@@ -613,7 +557,6 @@ void HospitalUI::updateDoctorSchedule(vector<Doctor>& doctors) {
                 cout << "Enter hour (8-20): ";
                 cin >> hour;
                 doctor.removeScheduleSlot(day, hour);
-                cout << "Schedule slot removed!" << endl;
                 break;
             }
             case 3:
@@ -621,7 +564,6 @@ void HospitalUI::updateDoctorSchedule(vector<Doctor>& doctors) {
                 break;
             case 4:
                 doctor.clearSchedule();
-                cout << "Schedule cleared!" << endl;
                 break;
             case 0:
                 break;
@@ -630,14 +572,6 @@ void HospitalUI::updateDoctorSchedule(vector<Doctor>& doctors) {
             }
 
             found = true;
-
-            // Save all doctors after schedule update
-            prepareFileForSave(DOCTORS_FILE);
-            for (auto& d : doctors) {
-                d.saveToFile(DOCTORS_FILE);
-            }
-            cout << "Schedule updated. Data saved to " << DOCTORS_FILE << endl;
-
             break;
         }
     }
@@ -678,7 +612,6 @@ void HospitalUI::updateNurseShifts(vector<Nurse>& nurses) {
                 cout << "Enter hour (0-23): ";
                 cin >> hour;
                 nurse.addShift(day, hour);
-                cout << "Shift added!" << endl;
                 break;
             }
             case 2: {
@@ -688,7 +621,6 @@ void HospitalUI::updateNurseShifts(vector<Nurse>& nurses) {
                 cout << "Enter hour (0-23): ";
                 cin >> hour;
                 nurse.removeShift(day, hour);
-                cout << "Shift removed!" << endl;
                 break;
             }
             case 3:
@@ -696,7 +628,6 @@ void HospitalUI::updateNurseShifts(vector<Nurse>& nurses) {
                 break;
             case 4:
                 nurse.clearShifts();
-                cout << "Shifts cleared!" << endl;
                 break;
             case 0:
                 break;
@@ -705,14 +636,6 @@ void HospitalUI::updateNurseShifts(vector<Nurse>& nurses) {
             }
 
             found = true;
-
-            // Save all nurses after shift update
-            prepareFileForSave(NURSES_FILE);
-            for (auto& n : nurses) {
-                n.saveToFile(NURSES_FILE);
-            }
-            cout << "Shifts updated. Data saved to " << NURSES_FILE << endl;
-
             break;
         }
     }

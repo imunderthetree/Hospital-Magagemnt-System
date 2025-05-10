@@ -1,16 +1,22 @@
-
 #include "Admin.hh" 
 #include <iostream>
 #include <fstream>
-
-
-#include <iostream>
-#include <fstream>
+#include <string>
 
 using namespace std;
+
+// Constants for menu files
 const string Admin::PATIENT_MENU_FILE = "patient_menu.txt";
 const string Admin::DOCTOR_MENU_FILE = "doctor_menu.txt";
 const string Admin::NURSE_MENU_FILE = "nurse_menu.txt";
+
+// Constants for data files added from new.cpp
+const string Admin::DOCTORS_FILE = "doctors.txt";
+const string Admin::NURSES_FILE = "nurses.txt";
+const string Admin::PATIENTS_FILE = "patients.txt";
+
+// Added global string for adding entries from new.cpp
+string add;
 
 Admin::Admin(const string& uname, const string& pwd)
     : username(uname), password(pwd) {
@@ -391,4 +397,74 @@ bool Admin::editNurseMenu() {
     }
 
     return true;
+}
+
+// Functions integrated from new.cpp
+
+void Admin::read_file(const string& filename) {
+    ifstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file '" << filename << "'" << endl;
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        cout << line << endl;
+    }
+
+    file.close();
+}
+
+void Admin::add_file(const string& filename, const string& content) {
+    ofstream file(filename, ios::app);
+
+    if (!file.is_open()) {
+        cerr << "Error: Could not open file '" << filename << "'" << endl;
+        return;
+    }
+
+    file << content << endl;
+    file.close();
+}
+
+int Admin::set_admin_choice() {
+    int choice;
+    cout << "Now you are in the admin system for editing and reading\n";
+    cout << "Please enter 1, 2, 3 for reading those menus:\n";
+    cout << "doctor, nurse, patient\n";
+    cout << "or enter 4, 5, 6 for adding to them with the previous order: ";
+    cin >> choice;
+
+    switch (choice) {
+    case 1:
+        read_file(DOCTORS_FILE);
+        break;
+    case 2:
+        read_file(NURSES_FILE);
+        break;
+    case 3:
+        read_file(PATIENTS_FILE);
+        break;
+    case 4:
+        cout << "\nEnter a doctor you want to add: ";
+        cin >> add;
+        add_file(DOCTORS_FILE, add);
+        break;
+    case 5:
+        cout << "\nEnter a nurse you want to add: ";
+        cin >> add;
+        add_file(NURSES_FILE, add);
+        break;
+    case 6:
+        cout << "\nEnter a patient you want to add: ";
+        cin >> add;
+        add_file(PATIENTS_FILE, add);
+        break;
+    default:
+        cout << "Invalid choice. Please try again." << endl;
+    }
+
+    return choice;
 }

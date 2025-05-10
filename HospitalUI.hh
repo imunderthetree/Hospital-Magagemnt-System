@@ -1,41 +1,31 @@
 #ifndef HOSPITAL_UI_HH
 #define HOSPITAL_UI_HH
 
-#include <iostream>
-#include <string>
-#include <vector>
 #include "Admin.hh"
 #include "Receptionist.hh"
 #include "Patient.hh"
 #include "Doctor.hh"
 #include "Nurse.hh"
 #include "Ambulance.hh"
+#include <vector>
 
 class HospitalUI {
 public:
-    HospitalUI() = default;
-    ~HospitalUI() = default;
-
-    // Main menu display
+    // Main Menu
     int displayMainMenu();
 
-    // Handle different menu sections
+    // Admin Menu
     void handleAdminMenu(Admin& admin);
-    void handleReceptionMenu(Receptionist& reception);
-    void handlePatientServices(std::vector<Patient>& patients);
-    void handleMedicalStaffMenu(std::vector<Doctor>& doctors, std::vector<Nurse>& nurses);
-    void handleAmbulanceServices(Ambulance& ambulance);
-
-private:
-    // Admin sub-menus
-    int displayAdminMenu();
     void authenticateAdmin(Admin& admin);
+    int displayAdminMenu();
 
-    // Reception sub-menus
-    int displayReceptionMenu();
+    // Reception Menu
+    void handleReceptionMenu(Receptionist& reception);
     int getSelectedDay();
+    int displayReceptionMenu();
 
-    // Patient sub-menus
+    // Patient Services
+    void handlePatientServices(std::vector<Patient>& patients);
     int displayPatientMenu();
     void registerNewPatient(std::vector<Patient>& patients);
     void viewPatientInfo(const std::vector<Patient>& patients);
@@ -43,7 +33,8 @@ private:
     void admitPatient(std::vector<Patient>& patients);
     void dischargePatient(std::vector<Patient>& patients);
 
-    // Medical staff sub-menus
+    // Medical Staff
+    void handleMedicalStaffMenu(std::vector<Doctor>& doctors, std::vector<Nurse>& nurses);
     int displayMedicalStaffMenu();
     void registerDoctor(std::vector<Doctor>& doctors);
     void registerNurse(std::vector<Nurse>& nurses);
@@ -52,7 +43,8 @@ private:
     void updateDoctorSchedule(std::vector<Doctor>& doctors);
     void updateNurseShifts(std::vector<Nurse>& nurses);
 
-    // Ambulance sub-menus
+    // Ambulance Services
+    void handleAmbulanceServices(Ambulance& ambulance);
     int displayAmbulanceMenu();
 };
 

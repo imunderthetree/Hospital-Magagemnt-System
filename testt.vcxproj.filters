@@ -21,9 +21,6 @@
     <ClCompile Include="Ambulance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HospitalUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Receptionist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,6 +37,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Nurse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HospitalUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
