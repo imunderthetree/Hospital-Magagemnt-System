@@ -1,0 +1,8 @@
+1. View Patient List
+2. View Patient Details
+3. Update Patient Record
+4. Add New Patient
+5. Prescribe Medication
+6. Schedule Appointment
+7. View Appointment Calendar
+8. Exit

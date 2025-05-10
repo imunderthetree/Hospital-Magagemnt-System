@@ -1,0 +1,23 @@
+Person Information:
+ID: 2023
+Name: yusuf
+Age: 19
+Gender: male
+Phone: 0155117205
+Address: na
+
+Patient Information:
+Patient ID: 2023
+Blood Type: b+
+Emergency Contact: 0155117205
+Status: Not Admitted
+
+Medical History:
+
+Medications:
+
+Allergies:
+- dust
+
+----------------------------------------
+

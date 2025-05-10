@@ -1,0 +1,2 @@
+receptionist,password
+admin,admin123

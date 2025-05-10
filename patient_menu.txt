@@ -1,0 +1,8 @@
+1. View Personal Information
+2. Update Contact Information
+3. View Medical History
+4. View Current Medications
+5. Schedule Appointment
+6. View Upcoming Appointments
+7. Request Prescription Refill
+8. Exit

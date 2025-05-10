@@ -1,0 +1,8 @@
+1. View Assigned Patients
+2. Record Vital Signs
+3. View Patient Details
+4. Add Task
+5. View Tasks
+6. Mark Task as Completed
+7. View Schedule
+8. Exit
